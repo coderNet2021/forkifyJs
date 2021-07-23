@@ -1,0 +1,79 @@
+const recipeContainer = document.querySelector('.recipe');
+
+const timeout = function (s) {
+  return new Promise(function (_, reject) {
+    setTimeout(function () {
+      reject(new Error(`Request took too long! Timeout after ${s} second`));
+    }, s * 1000);
+  });
+};
+
+// https://forkify-api.herokuapp.com/v2
+
+///////////////////////////////////////
+/*
+npm init
+npm  i parcel -D
+
+npm run start
+ if we have errorrs : npm install sass@1.26.10
+ ana ma ken 3ande errors
+
+
+*/
+
+console.log('Test!!!');
+//using el destructuring
+// const showReceipe = async function () {
+//   try {
+//     const res = await fetch(
+//       'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
+//     );
+//     const data1 = await res.json();
+
+//     if (!res.ok) throw new Error(`${data1.message}`);
+//     console.log(res, data1);
+//     console.log(data1.data.recipe);
+//     console.log(data1.status);
+//     const { data } = data1;
+//     console.log(data);
+//     console.log(data.recipe.servings);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// const showReceipe = async function () {
+//   try {
+//     const res = await fetch(
+//       'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
+//     );
+//     const data = await res.json();
+
+//     if (!res.ok) throw new Error(`${data.message}`);
+//     console.log(res, data);
+//     console.log(data.data.recipe);
+//     console.log(data.status);
+//     const { status, ...data1 } = data;
+//     console.log('data 1', data1);
+//     console.log(data.data.recipe.servings);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+const showReceipe = async function () {
+  try {
+    const res = await fetch(
+      'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886'
+    );
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(`${data.message} $`);
+    console.log(res, data);
+    
+  } catch (error) {
+    console.log(error);
+  }
+};
+showReceipe();
