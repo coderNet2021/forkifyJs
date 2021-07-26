@@ -103,7 +103,10 @@ const controlSearchResults = async function () {
 
     //3) render Results
     //console.log(model.state.search.results);
-    resultsView.render(model.state.search.results);
+    //all results
+    //resultsView.render(model.state.search.results);
+    //some results : 
+    resultsView.render(model.getSearchResultsPage());
   } catch (error) {
     console.error(error);
     recipeView.renderError(); //`error : ${error} !!! OMG`
