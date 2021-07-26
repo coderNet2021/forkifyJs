@@ -65,6 +65,7 @@ export const getSearchResultsPage = function(page=state.search.page) {
   
   const start =(page-1)*state.search.resultsPerPage;//0;
   const end=page*10;//9;
+  console.log(state.search.resultsPerPage, start, end);
   return state.search.results.slice(start,end);  
 }
 
