@@ -7,9 +7,9 @@ import paginationView from './views/paginationView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
 const { recip } = require('prelude-ls');
 //console.log(icons);
@@ -80,11 +80,17 @@ const controlRecepies = async function () {
     if (!id) return;
     recipeView.renderSpinner();
 
+    //0 update results view to mark selected search recipe
+    resultsView.update(model.getSearchResultsPage());
+
     //1 load the recipe
     await model.loadRecipe(id);
     const { recipe } = model.state;
     recipeView.render(model.state.recipe);
     //console.log(recipe);
+
+    // //test
+    // controlServings();
   } catch (error) {
     //console.error(error);
     recipeView.renderError(); //`error : ${error} !!! OMG`
@@ -106,9 +112,9 @@ const controlSearchResults = async function () {
     //console.log(model.state.search.results);
     //all results
     //resultsView.render(model.state.search.results);
-    //some results : 
-    resultsView.render(model.getSearchResultsPage(3));
-    
+    //some results :
+    resultsView.render(model.getSearchResultsPage());
+
     //4 ) render iniial pagination buttons
     paginationView.render(model.state.search);
   } catch (error) {
@@ -117,22 +123,41 @@ const controlSearchResults = async function () {
   }
 };
 
-const controlPagination = function(goToPage){
+const controlPagination = function (goToPage) {
   //render new results
   resultsView.render(model.getSearchResultsPage(goToPage));
-    
-    //4 ) render new pagination buttons
-    // new btns should render
-  paginationView.render(model.state.search)
-  
+
+  //4 ) render new pagination buttons
+  // new btns should render
+  paginationView.render(model.state.search);
+
   //console.log('goToPage', goToPage);
-}
+};
+
+const controlServings = function (newServings) {
+  //update the recipe servings in the state
+  model.updateServings(newServings);
+
+  //update the view : recipeView
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
+
+const controlAddBookmark = function () {
+  model.addBookmark(model.state.recipe);
+  console.log(model.state.recipe);
+};
 
 // controlRecepies();
 //controlSearchResults();
 const init = function () {
+  
   recipeView.addHandlerRender(controlRecepies);
+  recipeView.addHandlerUpdateServings(controlServings);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
+
   searchView.addHandlerSearch(controlSearchResults);
+
   paginationView.addHandlerClick(controlPagination);
 };
 init();

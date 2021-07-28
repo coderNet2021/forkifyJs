@@ -8,9 +8,10 @@ export const state = {
   search: {
     query: '',
     results: [],
-    page:1,
-    resultsPerPage:RES_PER_PAGE,
+    page: 1,
+    resultsPerPage: RES_PER_PAGE,
   },
+  bookmarks:[],
 };
 
 export const loadRecipe = async function (id) {
@@ -53,6 +54,7 @@ export const loadSearchResults = async function (query) {
         image: rec.image_url,
       };
     });
+    state.search.page = 1;
     //console.log(state.search.results);
   } catch (error) {
     //console.log(`${error} !!! oooohhh mG`);
@@ -60,12 +62,29 @@ export const loadSearchResults = async function (query) {
   }
 };
 
-export const getSearchResultsPage = function(page=state.search.page) {
-  state.search.page=page;
-  
-  const start =(page-1)*state.search.resultsPerPage;//0;
-  const end=page*10;//9;
-  console.log(state.search.resultsPerPage, start, end);
-  return state.search.results.slice(start,end);  
-}
+export const getSearchResultsPage = function (page = state.search.page) {
+  state.search.page = page;
 
+  const start = (page - 1) * state.search.resultsPerPage; //0;
+  const end = page * state.search.resultsPerPage; //9;
+  console.log(state.search.resultsPerPage, start, end);
+  return state.search.results.slice(start, end);
+};
+
+export const updateServings = function (newServings) {
+  //reach the state recipe ingredients
+  state.recipe.ingredients.forEach(ing => {
+    ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
+    //new Qty=oldQunty *NewServing/OldServings // 2*8/4=2*2=4
+  });
+  state.recipe.servings = newServings;
+};
+
+export const addBookmark = function(recipe){
+  //add bookmark
+  state.bookmarks.push(recipe);
+
+  //mark the current recipe as bookmarked
+  //set a new property to the recipe object
+  if(recipe.id===state.recipe.id) state.recipe.bookmarked=true ;
+}
